@@ -14,6 +14,7 @@ exports.updateTodo =  async (req, res) => {
           message:'Todo id is required for updating the todo'
         })
       };
+      
       const findTodo = await TodoTable.findOne({
         where: {
           user_id,
