@@ -1,47 +1,20 @@
 const express = require("express");
 const app = express();
-const {Op, where} = require('sequelize');
-const jwt = require('jsonwebtoken');
+const createTodoRoutes = require('./routes/todoRoutes');
+const userRoutes = require('./routes/authRoutes');
+const allTokenRoutes = require('./routes/allTokenRoutes');
+const allUserRoutes = require('./routes/allUsersRoutes');
 const sendWelcomeEmail = require("./email");
-const fs = require('fs');
-const path = require('path');
 
-const authenticate = require('./middlewares/authenticate');
-const upload = require('./middlewares/multer');
 
 app.use(express.json());
-const DB = require('./models');
-const User = DB.Users;
-const Token = DB.Token;
-const TodoTable = DB.TodoTable;
 
-app.get("/v1/api/get-all-tokens",);
+app.use("/v1/api/get-all-tokens",allTokenRoutes);
+app.get("/v1/api/all-users", allUserRoutes);
 
-app.get("/v1/api/all-users", );
-
-app.put('/v1/api/update/:id',)
-
-app.post('/v1/api/register',);
-
-
-app.delete('/v1/api/delete-user/:id',
-
-);
-
-// User todo list 
-app.put('/v1/api/users/update-todo', authenticate,upload.single('image'), );
-
-
-app.delete('/v1/api/users/delete-todo', authenticate, 
-
-)
-
-app.post(
-  '/v1/api/users/create-todo',
-  authenticate,
-  upload.single('image'), // 👈 multer here
- 
-);
+// // User todo list 
+app.use('/v1/api/users', userRoutes);
+app.use('/v1/api/users/todo', createTodoRoutes);
 
 
 app.listen(3000, () => {
