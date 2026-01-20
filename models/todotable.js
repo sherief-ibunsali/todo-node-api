@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
         as:'user',
         onDelete:'CASCADE',
         onUpdate:'CASCADE'
+      }),
+      TodoTable.hasMany(models.MultiTodo,{
+        foreignKey: 'todo_id',
+        as: 'multiTodos',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       })
     }
   }

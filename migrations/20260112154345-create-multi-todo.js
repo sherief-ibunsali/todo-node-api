@@ -1,4 +1,4 @@
-      'use strict';
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -9,30 +9,34 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'Users',
-          key:'id',
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'CASCADE'
       },
+
       todo_id: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'TodoTable',
-          key:'id'
+        allowNull: false,
+        references: {
+          model: 'TodoTables',
+          key: 'id'
         },
-        onDelete:'CASCADE',
-        onDelete:'CASCADE'
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
+
       images: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull: false
       },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -43,7 +47,8 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+
+  async down(queryInterface) {
     await queryInterface.dropTable('MultiTodos');
   }
 };

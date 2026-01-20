@@ -106,3 +106,8 @@ const newUsers = await Users.create({
     email: email,
     password: password
  });
+
+
+
+5.) Incase if we want to add new foriegn in the existing table need to execute this
+ npx sequelize-cli migration:generate --name add-fk-to-multitodos 

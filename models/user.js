@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.TodoTable, {
         foreignKey:'user_id',
         as:'todos'
+      }),
+      User.hasMany(models.MultiTodo, {
+        foreignKey: 'user_id',
+        as:'multiTodos'
       })
     }
   }

@@ -5,7 +5,7 @@ const userRoutes = require('./routes/authRoutes');
 const allTokenRoutes = require('./routes/allTokenRoutes');
 const allUserRoutes = require('./routes/allUsersRoutes');
 const sendWelcomeEmail = require("./email");
-
+const multiTodoRoutes = require('./routes/multiTodoRoutes');
 
 app.use(express.json());
 
@@ -15,6 +15,8 @@ app.get("/v1/api/all-users", allUserRoutes);
 // // User todo list 
 app.use('/v1/api/users', userRoutes);
 app.use('/v1/api/users/todo', createTodoRoutes);
+
+app.use('/v1/api/multi-todo', multiTodoRoutes);
 
 
 app.listen(3000, () => {
