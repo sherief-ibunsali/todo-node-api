@@ -108,6 +108,35 @@ const newUsers = await Users.create({
  });
 
 
+2.) If we want to name column type, need to Run
+npx sequelize-cli migration:generate --name change-multitodos-images-to-json
+
+'use strict';
+
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    // Change images column from STRING to JSON
+    await queryInterface.changeColumn('MultiTodos', 'images', {
+      type: Sequelize.JSON,
+      allowNull: false
+    });
+  },
+
+  async down(queryInterface, Sequelize) {
+    // Revert back to STRING if needed
+    await queryInterface.changeColumn('MultiTodos', 'images', {
+      type: Sequelize.STRING,
+      allowNull: false
+    });
+  }
+};
+Need to add the new data type in the Modal
+ images: {
+        type: DataTypes.JSON,
+        allowNull: false
+      }   
+
+
 
 5.) Incase if we want to add new foriegn in the existing table need to execute this
  npx sequelize-cli migration:generate --name add-fk-to-multitodos 

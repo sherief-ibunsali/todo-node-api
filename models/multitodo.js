@@ -31,9 +31,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       images: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: false
-      }
+      }      
     },
     {
       sequelize,
