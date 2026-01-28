@@ -73,9 +73,24 @@ exports.updateMultiTodo = async (req, res) => {
         }
         if(findMultiTodo.images && Array.isArray(findMultiTodo.images)){
            findMultiTodo.images.forEach((file) => {
-              const imagePath = path.join(process.cwd(),'uploads/images', file);
-           })
-        } 
+              const imgPath = path.join(process.cwd(),'uploads/images', file);
+              if (fs.existsSync(imgPath)) {
+                fs.unlinkSync(imgPath);
+              }
+            });
+          }
+      
+          const newImages = images.map(file => file.filename);
+      
+          await findMultiTodo.update({
+            images: newImages
+          });
+      
+          return res.status(200).json({
+            status: 'success',
+            message: 'Images updated successfully',
+            data: findMultiTodo
+          });
     }catch(err) {
         return res.status(500).json({
             status: 'fail',
