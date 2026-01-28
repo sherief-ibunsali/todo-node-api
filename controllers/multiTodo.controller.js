@@ -57,7 +57,7 @@ exports.updateMultiTodo = async (req, res) => {
                 status: 'fail',
                 message: 'MultiTodo ID is required for update'
             });
-        } 
+        }
         const findMultiTodo = await MultiTodo.findOne({
             where: {
                 user_id,
@@ -97,4 +97,48 @@ exports.updateMultiTodo = async (req, res) => {
             message: err.message
         })
     }
+}
+
+exports.deleteMultiTodo = async (req, res) => {
+    try{
+        const {multi_todo_id} = req.params;
+        const user_id = req.user.id;
+        if(!multi_todo_id){
+            return res.status(400).json({
+                status: 'fail',
+                message: 'MultiTodo ID is required for delete the list'
+            })
+        }
+        const findMultiTodo = await MultiTodo.findOne({
+            where:{
+                user_id,
+                id:multi_todo_id
+            }
+        });
+        if(!findMultiTodo){
+            return res.status(404).json({
+                status:'fail',
+                message:'Invalid multi todo for this user'
+            });
+        }
+        if(findMultiTodo.images){
+            findMultiTodo.images.map((file)=> {
+                const imagePath = path.join(process.cwd(),'uploads/images', file);
+                if(fs.existsSync(imagePath)){
+                    fs.unlinkSync(imagePath);
+                }
+            })
+        }
+        await findMultiTodo.destroy();
+        return res.status(200).json({
+            status:'success',
+            message:'MultiTodo deleted successfully'
+        })
+    } catch(err){
+        return res.status(500).json({
+            status: 'fail',
+            message: err.message
+        })
+    }
+
 }
