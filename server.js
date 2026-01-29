@@ -6,6 +6,7 @@ const allTokenRoutes = require('./routes/allTokenRoutes');
 const allUserRoutes = require('./routes/allUsersRoutes');
 const sendWelcomeEmail = require("./email");
 const multiTodoRoutes = require('./routes/multiTodoRoutes');
+const getAllTodoRoutes = require('./routes/getAllTodoRoutes')
 
 app.use(express.json());
 
@@ -17,6 +18,8 @@ app.use('/v1/api/users', userRoutes);
 app.use('/v1/api/users/todo', createTodoRoutes);
 
 app.use('/v1/api/multi-todo', multiTodoRoutes);
+
+app.use('/v1/api/get-all-todo', getAllTodoRoutes);
 
 
 app.listen(3000, () => {

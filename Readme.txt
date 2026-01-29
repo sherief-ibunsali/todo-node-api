@@ -140,3 +140,77 @@ Need to add the new data type in the Modal
 
 5.) Incase if we want to add new foriegn in the existing table need to execute this
  npx sequelize-cli migration:generate --name add-fk-to-multitodos 
+
+
+ 6.) Use joins by sequelize
+ SELECT
+  TodoTables.list,
+  TodoTables.images AS todo_image,
+  MultiTodos.images AS multi_images
+FROM TodoTables
+JOIN MultiTodos
+  ON MultiTodos.todo_id = TodoTables.id;
+
+///////////////////////////////////
+const TodoTable = DB.TodoTable;
+const MultiTodo = DB.MultiTodo;
+
+const todos = await TodoTable.findAll({
+  attributes: [
+    'list',
+    ['images', 'todo_image']
+  ],
+  include: [
+    {
+      model: MultiTodo,
+      as: 'multiTodos',
+      attributes: [['images', 'multi_images']]
+    }
+  ]
+});
+
+////
+🔍 What Sequelize is matching on (important)
+
+This line:
+
+include: [{
+  model: MultiTodo,
+  as: 'multiTodos'
+}]
+
+
+👉 Sequelize does NOT guess joins
+👉 It uses model associations
+
+🧠 Your Association (THIS is what controls the join)
+
+You (should) have this:
+
+// TodoTable model
+TodoTable.hasMany(models.MultiTodo, {
+  foreignKey: 'todo_id',
+  as: 'multiTodos'
+});
+
+// MultiTodo model
+MultiTodo.belongsTo(models.TodoTable, {
+  foreignKey: 'todo_id',
+  as: 'todo'
+});
+🧩 Sequelize-generated JOIN (Behind the scenes)
+
+Sequelize automatically generates SQL like:
+
+SELECT ...
+FROM TodoTables
+INNER JOIN MultiTodos
+  ON MultiTodos.todo_id = TodoTables.id
+
+
+⚠️ No user_id is used here
+
+❓ So where does user_id come in?
+Answer: Nowhere — unless you explicitly add it
+
+If you want to match by both todo_id AND user_id, you must say so.
